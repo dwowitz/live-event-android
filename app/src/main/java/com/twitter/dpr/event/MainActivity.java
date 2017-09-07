@@ -171,11 +171,17 @@ public class MainActivity extends AppCompatActivity {
         // this block uses the new Twitter Kit 3 native Tweet Composer
         // that does not require the Twitter app to be installed
 
-        final Intent intent = new ComposerActivity.Builder(this)
-                .session(TwitterCore.getInstance().getSessionManager().getActiveSession())
-                .hashtags(getString(R.string.hashtag))
-                .createIntent();
-        startActivity(intent);
+        TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
+        if (session == null) {
+            Toast.makeText(getApplicationContext(),
+                    "Please login first.", Toast.LENGTH_SHORT).show();
+        } else {
+            final Intent intent = new ComposerActivity.Builder(this)
+                    .session(TwitterCore.getInstance().getSessionManager().getActiveSession())
+                    .hashtags(getString(R.string.hashtag))
+                    .createIntent();
+            startActivity(intent);
+        }
 
         // to use the richer Composer from the Twitter app, uncomment this block
         // and remove the five lines above
